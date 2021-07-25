@@ -239,13 +239,13 @@ def receive(connection, output):
             print('Checksum error')
             continue
 
-        # 128 = ACK em decimal
+        #Shipping confirmations 
         if received_data.flags == 128:
             if received_data.id == sent_data.id:
                 print('ACK received')
                 sent_data.confirmed = True
-        else:
-            # Se não for ACK, então é dados
+        #File data                
+        else:            
             expected_id = 1 if id == 0 else 0
             if received_data.id != expected_id:
                 print('Retransmitting data and resending ACK')
