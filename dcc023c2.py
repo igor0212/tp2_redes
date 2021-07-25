@@ -34,7 +34,7 @@ class Data:
         id = self.format_number(self.id, False)
         data = self.encode(self.data)
         flags = self.format_number(self.flags, False)
-        checksum = self.format_number(self.check_sum())        
+        checksum = self.format_number(self.get_checksum())        
         header = (id + flags + checksum).encode()
         return header + data + EOF.encode() 
 
@@ -43,7 +43,7 @@ class Data:
         pattern = '{:04x}' if has_two_bytes else '{:02x}'
         return pattern.format(number)
 
-    def check_sum(self):        
+    def get_checksum(self):        
         data = SOF 
         data += self.format_number(self.id, False)
         data += self.format_number(self.flags, False)
@@ -235,7 +235,7 @@ def receive(connection, output):
             continue
 
         #Checking checksum
-        if received_data.check_sum() != received_checksum:
+        if received_data.get_checksum() != received_checksum:
             print('Checksum error')
             continue
 
